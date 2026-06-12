@@ -1195,33 +1195,33 @@
 <footer class="download-section" data-component="asset-downloads">
   <h3>素材下载</h3>
   <div class="download-grid">
-    <button class="download-btn" onclick="downloadSVG('avatar')">
+    <button class="download-btn" onclick="downloadPNG('avatar')">
       <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
       头像
     </button>
-    <button class="download-btn" onclick="downloadSVG('banner')">
+    <button class="download-btn" onclick="downloadPNG('banner')">
       <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
       主页横幅
     </button>
-    <button class="download-btn" onclick="downloadSVG('cover-1')">
+    <button class="download-btn" onclick="downloadPNG('cover-1')">
       <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
       封面·每日一言
     </button>
-    <button class="download-btn" onclick="downloadSVG('cover-2')">
+    <button class="download-btn" onclick="downloadPNG('cover-2')">
       <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
       封面·深夜文案
     </button>
-    <button class="download-btn" onclick="downloadSVG('cover-3')">
+    <button class="download-btn" onclick="downloadPNG('cover-3')">
       <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
       封面·百家观点
     </button>
-    <button class="download-btn" onclick="downloadSVG('cover-4')">
+    <button class="download-btn" onclick="downloadPNG('cover-4')">
       <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
       封面·情感故事
     </button>
     <button class="download-btn full-width" onclick="downloadAll()">
       <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-      全部下载（SVG + PNG）
+      全部下载 PNG
     </button>
   </div>
 </footer>
@@ -1334,7 +1334,7 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  function downloadSVG(id) {
+  function downloadPNG(id) {
     const svgMap = {
       'avatar': 'avatar-svg',
       'banner': 'banner-svg',
@@ -1366,17 +1366,9 @@
     const name = nameMap[id];
     const size = sizeMap[id];
 
-    // Resolve CSS variables
+    // Resolve CSS variables and export PNG
     const resolved = resolveCssVars(svgEl);
-
-    // Export SVG
-    const svgData = '<?xml version="1.0" encoding="UTF-8"?>\n' +
-      new XMLSerializer().serializeToString(resolved);
-    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-    downloadBlob(svgBlob, name + '.svg');
-
-    // Also export PNG (high resolution)
-    setTimeout(() => exportPNG(resolved, name + '.png', size.w, size.h), 200);
+    exportPNG(resolved, name + '.png', size.w, size.h);
   }
 
   function exportPNG(svgClone, filename, targetW, targetH) {
@@ -1399,11 +1391,11 @@
     img.src = url;
   }
 
-  // Download all as individual files
+  // Download all as individual PNG files
   function downloadAll() {
     const ids = ['avatar', 'banner', 'cover-1', 'cover-2', 'cover-3', 'cover-4'];
     ids.forEach((id, i) => {
-      setTimeout(() => downloadSVG(id), i * 800);
+      setTimeout(() => downloadPNG(id), i * 800);
     });
   }
 
